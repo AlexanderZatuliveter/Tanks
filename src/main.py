@@ -17,17 +17,17 @@ red_tank = Red_Tank(SCREEN_WIDTH//3, SCREEN_HEIGHT//3, SCREEN_WIDTH - 75, SCREEN
 
 while True:
     screen.fill(bg_color)
-    
+
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
         if keys[pygame.K_ESCAPE] or event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    
+
     blue_tank.update()
     blue_tank.draw()
-    
+
     red_tank.update()
     red_tank.draw(screen)
-    
+
     pygame.display.flip()
