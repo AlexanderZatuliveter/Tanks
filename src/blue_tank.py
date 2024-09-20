@@ -3,19 +3,22 @@ import pygame
 from direction import Direction
 from utils import Utils
 from bullet import Bullet
+from consts import SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class Blue_Tank():
-    def __init__(self, x, y, SCREEN_WIDTH, SCREEN_HEIGHT, screen, bullets: List):
+    def __init__(self, x, y, screen, bullets: List):
 
         utils = Utils()
 
         self.x = x
         self.y = y
 
-        self.max_y = SCREEN_HEIGHT
-        self.max_x = SCREEN_WIDTH
+        self.max_y = SCREEN_HEIGHT - 75
+        self.max_x = SCREEN_WIDTH - 75
 
+        self._next_shot_time = 0
+        self.shot_speed_ms = 750
         self.speed = 0.6
         self.direction = Direction.right
 
@@ -46,6 +49,7 @@ class Blue_Tank():
             self.direction = Direction.right
 
         if keys[pygame.K_LSHIFT]:
-            new_bullet = Bullet(self.x, self.y, self.direction)
-            self._bullets.append(new_bullet)
-            # todo: add delay for the next shot
+            if self._next_shot_time <= pygame.time.get_ticks():
+                new_bullet = Bullet(self.x, self.y, self.direction)
+                self._bullets.append(new_bullet)
+                self._next_shot_time = pygame.time.get_ticks() + self.shot_speed_ms

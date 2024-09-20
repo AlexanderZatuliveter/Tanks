@@ -5,7 +5,7 @@ from consts import SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class Bullet():
-    def __init__(self, x, y, direction: Direction, speed: float = 0.8):
+    def __init__(self, x, y, direction: Direction, speed: float = 2.0):
 
         utils = Utils()
 

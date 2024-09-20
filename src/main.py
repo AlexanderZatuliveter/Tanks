@@ -8,14 +8,13 @@ from consts import SCREEN_HEIGHT, SCREEN_WIDTH
 
 pygame.init()
 
-
 bg_color = 128, 128, 0
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 bullets: List[Bullet] = list()
 
-blue_tank = Blue_Tank(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, SCREEN_WIDTH - 75, SCREEN_HEIGHT - 75, screen, bullets)
+blue_tank = Blue_Tank(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, screen, bullets)
 # red_tank = Red_Tank(SCREEN_WIDTH//3, SCREEN_HEIGHT//3, SCREEN_WIDTH - 75, SCREEN_HEIGHT - 75, bullets)
 
 
