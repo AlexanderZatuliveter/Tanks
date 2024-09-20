@@ -9,8 +9,8 @@ class Bullet():
 
         utils = Utils()
 
-        self.x = x
-        self.y = y
+        self.x = x+30
+        self.y = y+30
 
         self.speed = speed
 
