@@ -1,29 +1,41 @@
 import pygame
+from direction import Direction
 from utils import Utils
+from consts import SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class Bullet():
-    def __init__(self, x, y):
+    def __init__(self, x, y, direction: Direction, speed: float = 0.8):
 
         utils = Utils()
 
         self.x = x
         self.y = y
 
-        self.image = utils.load_image('images/bullet2.png')
+        self.speed = speed
+
+        self.image = utils.load_image('images/bullet.png')
         self.rect = self.image.get_rect()
 
-        self.angle = 0
+        self.direction = direction
 
-    def draw(self, screen, angle):
-        image = pygame.transform.rotate(self.image, angle)
+        self.is_destroyed = False
+
+    def draw(self, screen):
+        image = pygame.transform.rotate(self.image, self.direction)
         screen.blit(image, (self.x, self.y))
 
-    def shoot(self, screen, angle, max_x, max_y):
-        self.draw(screen, angle)
-        while True:
-            self.x += 1
-            if self.x >= max_x:
-                break
-            if self.y >= max_y:
-                break
+    def update(self):
+        if self.direction == Direction.left:
+            self.x -= self.speed
+        if self.direction == Direction.right:
+            self.x += self.speed
+        if self.direction == Direction.up:
+            self.y -= self.speed
+        if self.direction == Direction.down:
+            self.y += self.speed
+
+        if self.x >= SCREEN_WIDTH:
+            self.is_destroyed = True
+        if self.y >= SCREEN_HEIGHT:
+            self.is_destroyed = True
