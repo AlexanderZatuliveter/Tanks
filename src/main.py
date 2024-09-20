@@ -1,9 +1,8 @@
 from typing import List
 import pygame
 import sys
-from blue_tank import Blue_Tank
+from tank import Tank
 from bullet import Bullet
-from red_tank import Red_Tank
 from consts import SCREEN_HEIGHT, SCREEN_WIDTH
 
 pygame.init()
@@ -14,8 +13,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 bullets: List[Bullet] = list()
 
-blue_tank = Blue_Tank(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, screen, bullets)
-# red_tank = Red_Tank(SCREEN_WIDTH//3, SCREEN_HEIGHT//3, SCREEN_WIDTH - 75, SCREEN_HEIGHT - 75, bullets)
+blue_tank = Tank(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, screen, bullets, player=1)
+red_tank = Tank(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, screen, bullets, player=2)
 
 
 while True:
@@ -30,8 +29,8 @@ while True:
     blue_tank.update()
     blue_tank.draw()
 
-    # red_tank.update()
-    # red_tank.draw(screen)
+    red_tank.update()
+    red_tank.draw()
 
     for bullet in bullets:
         if bullet.is_destroyed:
