@@ -39,3 +39,7 @@ class Bullet():
             self.is_destroyed = True
         if self.y >= SCREEN_HEIGHT:
             self.is_destroyed = True
+        if self.x <= 0:
+            self.is_destroyed = True
+        if self.y <= 0:
+            self.is_destroyed = True
