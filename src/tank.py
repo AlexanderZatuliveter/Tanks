@@ -8,28 +8,11 @@ from controls import Controls
 
 
 class Tank(ExSprite):
-    def __init__(self, x, y, screen, bullets: List, player: int):
+    def __init__(self, x, y, screen, bullets: List, image_path: str, controls: Controls):
 
-        if player == 1:
-            super().__init__('images/blue_tank.png', x, y)
-            self.controls = Controls(
-                up_key=pygame.K_w,
-                down_key=pygame.K_s,
-                left_key=pygame.K_a,
-                right_key=pygame.K_d,
-                fire=pygame.K_LSHIFT
-            )
-        else:
-            super().__init__('images/red_tank.png', x, y)
-            self.controls = Controls(
-                up_key=pygame.K_UP,
-                down_key=pygame.K_DOWN,
-                left_key=pygame.K_LEFT,
-                right_key=pygame.K_RIGHT,
-                fire=pygame.K_RCTRL
-            )
+        super().__init__(image_path, x, y)
 
-        self._player = player
+        self.controls = controls
 
         self.max_y = SCREEN_HEIGHT - 75
         self.max_x = SCREEN_WIDTH - 75
