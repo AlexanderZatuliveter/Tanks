@@ -19,6 +19,7 @@
         "blit",
         "centerx",
         "centery",
+        "collidepoint",
         "colliderect",
         "consts",
         "dtype",

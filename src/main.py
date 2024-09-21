@@ -9,13 +9,14 @@ pygame.init()
 
 bg_color = 128, 128, 0
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 bullets: List[Bullet] = list()
 
 blue_tank = Tank(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, screen, bullets, player=1)
 red_tank = Tank(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, screen, bullets, player=2)
 
+tanks = [blue_tank, red_tank]
 
 while True:
     screen.fill(bg_color)
@@ -26,11 +27,9 @@ while True:
             pygame.quit()
             sys.exit()
 
-    blue_tank.update()
-    blue_tank.draw()
-
-    red_tank.update()
-    red_tank.draw()
+    for tank in tanks:
+        tank.draw()
+        tank.update()
 
     for bullet in bullets:
         if bullet.is_destroyed:
@@ -39,5 +38,8 @@ while True:
     for bullet in bullets:
         bullet.update()
         bullet.draw(screen)
+
+        if blue_tank.rect.collidepoint(bullet.x, bullet.y):
+            tanks.remove(blue_tank)
 
     pygame.display.flip()

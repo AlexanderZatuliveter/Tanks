@@ -78,6 +78,10 @@ class Tank():
 
     def _shot(self):
         if self._next_shot_time <= pygame.time.get_ticks():
-            new_bullet = Bullet(self.x, self.y, self.direction)
+            new_bullet = Bullet(
+                int(self.x + self.rect.centerx),
+                int(self.y + self.rect.centery),
+                self.direction
+            )
             self._bullets.append(new_bullet)
             self._next_shot_time = pygame.time.get_ticks() + self.shot_speed_ms
