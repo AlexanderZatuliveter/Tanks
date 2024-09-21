@@ -1,18 +1,35 @@
 from typing import List
 import pygame
 from direction import Direction
-from utils import Utils
+from ex_sprite import ExSprite
 from bullet import Bullet
 from consts import SCREEN_HEIGHT, SCREEN_WIDTH
+from controls import Controls
 
 
-class Tank():
+class Tank(ExSprite):
     def __init__(self, x, y, screen, bullets: List, player: int):
 
-        utils = Utils()
+        if player == 1:
+            super().__init__('images/blue_tank.png', x, y)
+            self.controls = Controls(
+                up_key=pygame.K_w,
+                down_key=pygame.K_s,
+                left_key=pygame.K_a,
+                right_key=pygame.K_d,
+                fire=pygame.K_LSHIFT
+            )
+        else:
+            super().__init__('images/red_tank.png', x, y)
+            self.controls = Controls(
+                up_key=pygame.K_UP,
+                down_key=pygame.K_DOWN,
+                left_key=pygame.K_LEFT,
+                right_key=pygame.K_RIGHT,
+                fire=pygame.K_RCTRL
+            )
+
         self._player = player
-        self.x = x
-        self.y = y
 
         self.max_y = SCREEN_HEIGHT - 75
         self.max_x = SCREEN_WIDTH - 75
@@ -20,68 +37,30 @@ class Tank():
         self._next_shot_time = 0
         self.shot_speed_ms = 750
         self.speed = 0.6
-        self.direction = Direction.right
-
-        if player == 1:
-            self.image = utils.load_image('images/blue_tank.png')
-        else:
-            self.image = utils.load_image('images/red_tank.png')
-
-        self.rect = self.image.get_rect()
 
         self.screen = screen
 
         self._bullets = bullets
 
-    def draw(self):
-        image = pygame.transform.rotate(self.image, self.direction.value)
-        self.screen.blit(image, (self.x, self.y))
-
     def update(self):
         keys = pygame.key.get_pressed()
-        if self._player == 1:
-            self._control_player1(keys)
-        if self._player == 2:
-            self._control_player2(keys)
-
-    def _control_player1(self, keys):
-        if keys[pygame.K_w] and self.y >= 0:
+        if keys[self.controls.up_key] and self.y >= 0:
             self.y -= self.speed
-            self.direction = Direction.up
-        elif keys[pygame.K_s] and self.y <= self.max_y:
+            self.angle = Direction.up
+        elif keys[self.controls.down_key] and self.y <= self.max_y:
             self.y += self.speed
-            self.direction = Direction.down
-        elif keys[pygame.K_a] and self.x >= 0:
+            self.angle = Direction.down
+        elif keys[self.controls.left_key] and self.x >= 0:
             self.x -= self.speed
-            self.direction = Direction.left
-        elif keys[pygame.K_d] and self.x <= self.max_x:
+            self.angle = Direction.left
+        elif keys[self.controls.right_key] and self.x <= self.max_x:
             self.x += self.speed
-            self.direction = Direction.right
-        if keys[pygame.K_LSHIFT]:
-            self._shot()
+            self.angle = Direction.right
+        if keys[self.controls.fire]:
+            self._fire()
 
-    def _control_player2(self, keys):
-        if keys[pygame.K_UP] and self.y >= 0:
-            self.y -= self.speed
-            self.direction = Direction.up
-        elif keys[pygame.K_DOWN] and self.y <= self.max_y:
-            self.y += self.speed
-            self.direction = Direction.down
-        elif keys[pygame.K_LEFT] and self.x >= 0:
-            self.x -= self.speed
-            self.direction = Direction.left
-        elif keys[pygame.K_RIGHT] and self.x <= self.max_x:
-            self.x += self.speed
-            self.direction = Direction.right
-        if keys[pygame.K_RCTRL]:
-            self._shot()
-
-    def _shot(self):
+    def _fire(self):
         if self._next_shot_time <= pygame.time.get_ticks():
-            new_bullet = Bullet(
-                int(self.x + self.rect.centerx),
-                int(self.y + self.rect.centery),
-                self.direction
-            )
+            new_bullet = Bullet(self.x, self.y, self.angle)
             self._bullets.append(new_bullet)
             self._next_shot_time = pygame.time.get_ticks() + self.shot_speed_ms

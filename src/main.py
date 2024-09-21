@@ -28,7 +28,7 @@ while True:
             sys.exit()
 
     for tank in tanks:
-        tank.draw()
+        tank.draw(screen)
         tank.update()
 
     for bullet in bullets:
@@ -39,7 +39,7 @@ while True:
         bullet.update()
         bullet.draw(screen)
         
-        if blue_tank.rect.collidepoint(bullet.x, bullet.y):
-            tanks.remove(blue_tank)
+        # if blue_tank.rect.collidepoint(bullet.x, bullet.y):
+        #     tanks.remove(blue_tank)
 
     pygame.display.flip()
