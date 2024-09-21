@@ -38,7 +38,7 @@ while True:
     for bullet in bullets:
         bullet.update()
         bullet.draw(screen)
-
+        
         if blue_tank.rect.collidepoint(bullet.x, bullet.y):
             tanks.remove(blue_tank)
 

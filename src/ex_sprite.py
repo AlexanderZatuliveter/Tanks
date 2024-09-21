@@ -3,7 +3,7 @@ import pygame
 
 class ExSprite:
 
-    def __init__(self, image_path: str, x: int = 0, y: int = 0, angle: float = 0):
+    def __init__(self, image_path: str, x: float = 0, y: float = 0, angle: float = 0):
         # x, y - center of sprite
         self.x = x
         self.y = y
