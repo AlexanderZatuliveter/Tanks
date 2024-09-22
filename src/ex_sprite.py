@@ -1,4 +1,5 @@
 import pygame
+from consts import IS_DEBUG
 
 
 class ExSprite:
@@ -7,22 +8,29 @@ class ExSprite:
         # x, y - center of sprite
         self.x = x
         self.y = y
-        self.angle = angle  # rotate angle
         # Load an image
         self.image = pygame.image.load(image_path)
+        self.__angle = 0
+        self.angle = angle
 
-        # todo: if you need image rect, just create a new calculated property
-        # self.image_rect = self.image.get_rect(center=(x, y))
+    @property
+    def angle(self):
+        return self.__angle
 
-        self.debug = True  # debug mode, shows additional points of the sprite
+    @angle.setter
+    def angle(self, value):
+        if not self.__angle or self.__angle != value:
+            self.__angle = value
+            self.__rotated_image = pygame.transform.rotate(self.image, self.angle)
+
+    def get_rotated_rect(self):
+        return self.__rotated_image.get_rect(center=(self.x, self.y))
 
     def draw(self, screen: pygame.Surface):
-        # image_rect = self.image.get_rect(center=(self.x, self.y))
-        rotated_image = pygame.transform.rotate(self.image, self.angle)
-        rotated_rect = rotated_image.get_rect(center=(self.x, self.y))
+        rotated_rect = self.get_rotated_rect()
 
-        screen.blit(rotated_image, rotated_rect.topleft)
-        if self.debug:
+        screen.blit(self.__rotated_image, rotated_rect.topleft)
+        if IS_DEBUG:
             pygame.draw.circle(screen, (200, 0, 0), rotated_rect.topleft, 10, 1)
             pygame.draw.circle(screen, (0, 220, 0), rotated_rect.center, 10, 1)
             pygame.draw.rect(screen, (0, 0, 220), rotated_rect, 1)
