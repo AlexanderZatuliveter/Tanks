@@ -14,8 +14,11 @@ class Tank(ExSprite):
 
         self.controls = controls
 
-        self.max_y = SCREEN_HEIGHT - 75
-        self.max_x = SCREEN_WIDTH - 75
+        self.max_y = SCREEN_HEIGHT - 30
+        self.max_x = SCREEN_WIDTH
+
+        self.min_y = 30
+        self.min_x = 30
 
         self._next_shot_time = 0
         self.shot_speed_ms = 750
@@ -27,13 +30,13 @@ class Tank(ExSprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[self.controls.up_key] and self.y >= 0:
+        if keys[self.controls.up_key] and self.y >= self.min_y:
             self.y -= self.speed
             self.angle = Direction.up
         elif keys[self.controls.down_key] and self.y <= self.max_y:
             self.y += self.speed
             self.angle = Direction.down
-        elif keys[self.controls.left_key] and self.x >= 0:
+        elif keys[self.controls.left_key] and self.x >= self.min_x:
             self.x -= self.speed
             self.angle = Direction.left
         elif keys[self.controls.right_key] and self.x <= self.max_x:
@@ -44,6 +47,18 @@ class Tank(ExSprite):
 
     def _fire(self):
         if self._next_shot_time <= pygame.time.get_ticks():
-            new_bullet = Bullet(self.x, self.y, self.angle)
-            self._bullets.append(new_bullet)
+            rect = self.get_rotated_rect()
+            if self.angle == Direction.up:
+                new_bullet = Bullet(self.x, self.y - rect.height / 2, self.angle)
+                self._bullets.append(new_bullet)
+            elif self.angle == Direction.down:
+                new_bullet = Bullet(self.x, self.y + rect.height / 2, self.angle)
+                self._bullets.append(new_bullet)
+            elif self.angle == Direction.left:
+                new_bullet = Bullet(self.x - rect.width / 2, self.y, self.angle)
+                self._bullets.append(new_bullet)
+            elif self.angle == Direction.right:
+                new_bullet = Bullet(self.x + rect.width / 2, self.y, self.angle)
+                self._bullets.append(new_bullet)
+
             self._next_shot_time = pygame.time.get_ticks() + self.shot_speed_ms
