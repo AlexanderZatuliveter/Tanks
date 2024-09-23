@@ -68,7 +68,7 @@ while True:
 
         for tank in tanks:
             if tank.get_rotated_rect().collidepoint(bullet.x, bullet.y):
-                tanks.remove(tank)
                 bullets.remove(bullet)
+                tank.renew()
 
     pygame.display.flip()

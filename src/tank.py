@@ -12,13 +12,15 @@ class Tank(ExSprite):
 
         super().__init__(image_path, x, y)
 
+        self.rect = self.image.get_rect()
+
         self.controls = controls
 
-        self.max_y = SCREEN_HEIGHT - 30
-        self.max_x = SCREEN_WIDTH
+        self.max_y = SCREEN_HEIGHT - self.rect.height / 2
+        self.max_x = SCREEN_WIDTH - self.rect.width / 2
 
-        self.min_y = 30
-        self.min_x = 30
+        self.min_y = self.rect.height / 2
+        self.min_x = self.rect.width / 2
 
         self._next_shot_time = 0
         self.shot_speed_ms = 750
@@ -28,6 +30,10 @@ class Tank(ExSprite):
         self.angle: Direction
 
         self._bullets = bullets
+
+    def renew(self):
+        self.x = self.min_x
+        self.y = self.min_y
 
     def update(self):
         keys = pygame.key.get_pressed()
