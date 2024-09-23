@@ -25,6 +25,7 @@ class Tank(ExSprite):
         self.speed = 0.6
 
         self.screen = screen
+        self.angle: Direction
 
         self._bullets = bullets
 
