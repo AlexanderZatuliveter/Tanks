@@ -8,7 +8,7 @@ from controls import Controls
 
 
 class Tank(ExSprite):
-    def __init__(self, x, y, screen, bullets: List, image_path: str, controls: Controls):
+    def __init__(self, x, y, screen, bullets: List, image_path: str, controls: Controls, pos):
 
         super().__init__(image_path, x, y)
 
@@ -33,6 +33,8 @@ class Tank(ExSprite):
 
         self.death_sound = "./sounds/death_sound.mp3"
         self.fire_sound = "./sounds/fire_sound.mp3"
+        
+        self.color = pos
 
     def play_sound(self, path):
         pygame.mixer.init()
@@ -41,8 +43,15 @@ class Tank(ExSprite):
 
     def renew(self):
         self.play_sound(self.death_sound)
-        self.x = self.min_x
-        self.y = self.min_y
+        if self.color == 'blue_pos':
+            self.x = self.min_x
+            self.y = self.min_y
+        if self.color == 'red_pos':
+            self.x = self.max_x
+            self.y = self.min_y
+        if self.color == 'green_pos':
+            self.x = self.max_x
+            self.y = self.max_y
 
     def update(self):
         keys = pygame.key.get_pressed()

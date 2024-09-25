@@ -39,9 +39,9 @@ player3_controls = Controls(
 )
 
 
-blue_tank = Tank(SCREEN_WIDTH//2.25, SCREEN_HEIGHT//2.25, screen, bullets, 'images/blue_tank.png', player1_controls)
-red_tank = Tank(SCREEN_WIDTH//2.5, SCREEN_HEIGHT//2.5, screen, bullets, 'images/red_tank.png', player2_controls)
-green_tank = Tank(SCREEN_WIDTH//2.75, SCREEN_HEIGHT//2.75, screen, bullets, 'images/green_tank.png', player3_controls)
+blue_tank = Tank(SCREEN_WIDTH//2.25, SCREEN_HEIGHT//2.25, screen, bullets, 'images/blue_tank.png', player1_controls, 'blue_pos')
+red_tank = Tank(SCREEN_WIDTH//2.5, SCREEN_HEIGHT//2.5, screen, bullets, 'images/red_tank.png', player2_controls, 'red_pos')
+green_tank = Tank(SCREEN_WIDTH//2.75, SCREEN_HEIGHT//2.75, screen, bullets, 'images/green_tank.png', player3_controls, 'green_pos')
 
 tanks = [blue_tank, red_tank, green_tank]
 
