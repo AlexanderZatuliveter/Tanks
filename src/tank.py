@@ -5,10 +5,20 @@ from ex_sprite import ExSprite
 from bullet import Bullet
 from consts import SCREEN_HEIGHT, SCREEN_WIDTH
 from controls import Controls
+from corner import Corner
 
 
 class Tank(ExSprite):
-    def __init__(self, x, y, screen, bullets: List, image_path: str, controls: Controls, pos):
+    def __init__(
+        self,
+        x,
+        y,
+        screen,
+        bullets: List,
+        image_path: str,
+        controls: Controls,
+        start_corner: Corner
+    ):
 
         super().__init__(image_path, x, y)
 
@@ -33,8 +43,8 @@ class Tank(ExSprite):
 
         self.death_sound = "./sounds/death_sound.mp3"
         self.fire_sound = "./sounds/fire_sound.mp3"
-        
-        self.color = pos
+
+        self.start_corner = start_corner
 
     def play_sound(self, path):
         pygame.mixer.init()
@@ -43,14 +53,17 @@ class Tank(ExSprite):
 
     def renew(self):
         self.play_sound(self.death_sound)
-        if self.color == 'blue_pos':
+        if self.start_corner == Corner.top_left:
             self.x = self.min_x
             self.y = self.min_y
-        if self.color == 'red_pos':
+        if self.start_corner == Corner.top_right:
             self.x = self.max_x
             self.y = self.min_y
-        if self.color == 'green_pos':
+        if self.start_corner == Corner.down_right:
             self.x = self.max_x
+            self.y = self.max_y
+        if self.start_corner == Corner.down_left:
+            self.x = self.min_x
             self.y = self.max_y
 
     def update(self):

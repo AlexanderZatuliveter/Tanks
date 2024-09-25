@@ -5,6 +5,7 @@ from controls import Controls
 from tank import Tank
 from bullet import Bullet
 from consts import SCREEN_HEIGHT, SCREEN_WIDTH
+from corner import Corner
 
 pygame.init()
 
@@ -39,9 +40,21 @@ player3_controls = Controls(
 )
 
 
-blue_tank = Tank(SCREEN_WIDTH//2.25, SCREEN_HEIGHT//2.25, screen, bullets, 'images/blue_tank.png', player1_controls, 'blue_pos')
-red_tank = Tank(SCREEN_WIDTH//2.5, SCREEN_HEIGHT//2.5, screen, bullets, 'images/red_tank.png', player2_controls, 'red_pos')
-green_tank = Tank(SCREEN_WIDTH//2.75, SCREEN_HEIGHT//2.75, screen, bullets, 'images/green_tank.png', player3_controls, 'green_pos')
+blue_tank = Tank(
+    x=SCREEN_WIDTH//2.25,
+    y=SCREEN_HEIGHT//2.25,
+    screen=screen,
+    bullets=bullets,
+    image_path='images/blue_tank.png',
+    controls=player1_controls,
+    start_corner=Corner.top_left
+)
+
+red_tank = Tank(SCREEN_WIDTH//2.5, SCREEN_HEIGHT//2.5, screen, bullets,
+                'images/red_tank.png', player2_controls, start_corner=Corner.top_right)
+
+green_tank = Tank(SCREEN_WIDTH//2.75, SCREEN_HEIGHT//2.75, screen, bullets,
+                  'images/green_tank.png', player3_controls, start_corner=Corner.down_right)
 
 tanks = [blue_tank, red_tank, green_tank]
 
