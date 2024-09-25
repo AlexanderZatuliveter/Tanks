@@ -31,7 +31,16 @@ class Tank(ExSprite):
 
         self._bullets = bullets
 
+        self.death_sound = "./sounds/death_sound.mp3"
+        self.fire_sound = "./sounds/fire_sound.mp3"
+
+    def play_sound(self, path):
+        pygame.mixer.init()
+        sound = pygame.mixer.Sound(path)
+        sound.play()
+
     def renew(self):
+        self.play_sound(self.death_sound)
         self.x = self.min_x
         self.y = self.min_y
 
@@ -58,14 +67,18 @@ class Tank(ExSprite):
             if self.angle == Direction.up:
                 new_bullet = Bullet(self.x, self.y - rect.height / 2, self.angle)
                 self._bullets.append(new_bullet)
+                self.play_sound(self.fire_sound)
             elif self.angle == Direction.down:
                 new_bullet = Bullet(self.x, self.y + rect.height / 2, self.angle)
                 self._bullets.append(new_bullet)
+                self.play_sound(self.fire_sound)
             elif self.angle == Direction.left:
                 new_bullet = Bullet(self.x - rect.width / 2, self.y, self.angle)
                 self._bullets.append(new_bullet)
+                self.play_sound(self.fire_sound)
             elif self.angle == Direction.right:
                 new_bullet = Bullet(self.x + rect.width / 2, self.y, self.angle)
                 self._bullets.append(new_bullet)
+                self.play_sound(self.fire_sound)
 
             self._next_shot_time = pygame.time.get_ticks() + self.shot_speed_ms
