@@ -34,7 +34,7 @@ class Tank(ExSprite):
 
         self._next_shot_time = 0
         self.shot_speed_ms = 750
-        self.speed = 0.6
+        self.speed = 0.4
 
         self.screen = screen
         self.angle: Direction
