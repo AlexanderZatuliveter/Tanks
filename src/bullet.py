@@ -6,7 +6,7 @@ from consts import SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class Bullet(ExSprite):
-    def __init__(self, x, y, direction: Direction, speed: float = 2.860):
+    def __init__(self, x, y, direction: Direction, speed: float = 1.5):
 
         super().__init__('images/bullet.png', x, y, direction)
 
