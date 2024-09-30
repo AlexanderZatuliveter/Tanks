@@ -2,12 +2,24 @@ import pygame
 
 
 class KaBoom:
-    def __init__(self):
-        self.frame1 = pygame.image.load('./images/kaboom1.png')
-        self.frame2 = pygame.image.load('./images/kaboom2.png')
-        self.frame3 = pygame.image.load('./images/kaboom3.png')
-        
-    def draw(self, screen, pos):
-        screen.blit(self.frame1, pos)
-        screen.blit(self.frame2, pos)
-        screen.blit(self.frame3, pos)
+    def __init__(self, pos):
+        self.frames = [
+            pygame.image.load('./images/kaboom1.png'),
+            pygame.image.load('./images/kaboom2.png'),
+            pygame.image.load('./images/kaboom3.png')
+        ]
+        self.frame_speed_ms = 100
+        self._start_time = pygame.time.get_ticks()
+        self._frame = 0
+        self._pos = pos
+        self.is_destroyed = False
+
+    def update(self):
+        duration = pygame.time.get_ticks() - self._start_time
+        self._frame = duration // self.frame_speed_ms
+        if (self._frame > 2):
+            self.is_destroyed = True
+        self._frame = min(self._frame, 2)
+
+    def draw(self, screen):
+        screen.blit(self.frames[self._frame], self._pos)

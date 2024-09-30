@@ -13,6 +13,9 @@ class Bullet(ExSprite):
         self.speed = speed
         self.is_destroyed = False
 
+    def destroy(self):
+        self.is_destroyed = True
+
     def update(self):
         if self.angle == Direction.left:
             self.x -= self.speed

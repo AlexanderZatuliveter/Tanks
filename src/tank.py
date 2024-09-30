@@ -6,20 +6,20 @@ from bullet import Bullet
 from consts import SCREEN_HEIGHT, SCREEN_WIDTH
 from controls import Controls
 from corner import Corner
+from objects_manager import ObjectsManager
 
 
 class Tank(ExSprite):
     def __init__(
         self,
-        x,
-        y,
-        screen,
-        bullets: List,
+        x: float,
+        y: float,
+        screen: pygame.Surface,
+        bullets: ObjectsManager,
         image_path: str,
         controls: Controls,
         start_corner: Corner
     ):
-
         super().__init__(image_path, x, y)
 
         self.rect = self.image.get_rect()

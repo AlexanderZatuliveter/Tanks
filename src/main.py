@@ -2,9 +2,12 @@ from typing import List
 import pygame
 import sys
 from controls import Controls
+from game_field import GameField
+from kaboom import KaBoom
+from objects_manager import ObjectsManager
 from tank import Tank
 from bullet import Bullet
-from consts import SCREEN_HEIGHT, SCREEN_WIDTH
+from consts import SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT
 from corner import Corner
 
 pygame.init()
@@ -13,7 +16,7 @@ bg_color = 128, 128, 0
 
 screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-bullets: List[Bullet] = list()
+other_objects = ObjectsManager()
 
 player1_controls = Controls(
     up_key=pygame.K_w,
@@ -44,19 +47,36 @@ blue_tank = Tank(
     x=SCREEN_WIDTH//2.25,
     y=SCREEN_HEIGHT//2.25,
     screen=screen,
-    bullets=bullets,
+    bullets=other_objects,
     image_path='images/blue_tank.png',
     controls=player1_controls,
     start_corner=Corner.top_left
 )
 
-red_tank = Tank(SCREEN_WIDTH//2.5, SCREEN_HEIGHT//2.5, screen, bullets,
-                'images/red_tank.png', player2_controls, start_corner=Corner.top_right)
+red_tank = Tank(
+    x=SCREEN_WIDTH//2.25,
+    y=SCREEN_HEIGHT//2.25,
+    screen=screen,
+    bullets=other_objects,
+    image_path='images/red_tank.png',
+    controls=player2_controls,
+    start_corner=Corner.top_right
+)
 
-green_tank = Tank(SCREEN_WIDTH//2.75, SCREEN_HEIGHT//2.75, screen, bullets,
-                  'images/green_tank.png', player3_controls, start_corner=Corner.down_right)
+green_tank = Tank(
+    x=SCREEN_WIDTH//2.25,
+    y=SCREEN_HEIGHT//2.25,
+    screen=screen,
+    bullets=other_objects,
+    image_path='images/green_tank.png',
+    controls=player3_controls,
+    start_corner=Corner.down_right
+)
 
 tanks = [blue_tank, red_tank, green_tank]
+
+game_field = GameField(50, 33)
+
 
 while True:
     screen.fill(bg_color)
@@ -71,17 +91,16 @@ while True:
         tank.draw(screen)
         tank.update()
 
-    for bullet in bullets:
-        if bullet.is_destroyed:
-            bullets.remove(bullet)
+    other_objects.draw(screen)
+    other_objects.update()
 
-    for bullet in bullets:
-        bullet.update()
-        bullet.draw(screen)
-
+    for bullet in other_objects.get_object(Bullet):
         for tank in tanks:
             if tank.get_rotated_rect().collidepoint(bullet.x, bullet.y):
-                bullets.remove(bullet)
+                bullet.destroy()
+                other_objects.append(KaBoom(tank.pos))
                 tank.renew()
+
+    game_field.draw_block(x=20, y=20, screen=screen)
 
     pygame.display.flip()

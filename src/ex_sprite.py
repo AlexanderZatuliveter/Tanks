@@ -14,6 +14,10 @@ class ExSprite:
         self.angle = angle
 
     @property
+    def pos(self):
+        return (self.x, self.y)
+
+    @property
     def angle(self):
         return self.__angle
 
