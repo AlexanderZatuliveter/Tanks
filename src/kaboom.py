@@ -22,4 +22,6 @@ class KaBoom:
         self._frame = min(self._frame, 2)
 
     def draw(self, screen):
-        screen.blit(self.frames[self._frame], self._pos)
+        frame_image = self.frames[self._frame]
+        rect = frame_image.get_rect()
+        screen.blit(frame_image, (self._pos.x - rect.width / 2, self._pos.y - rect.height / 2))

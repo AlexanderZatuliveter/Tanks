@@ -77,7 +77,6 @@ tanks = [blue_tank, red_tank, green_tank]
 
 game_field = GameField(50, 33)
 
-
 while True:
     screen.fill(bg_color)
 

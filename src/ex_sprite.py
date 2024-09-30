@@ -1,5 +1,6 @@
 import pygame
 from consts import IS_DEBUG
+from position import Position
 
 
 class ExSprite:
@@ -15,7 +16,7 @@ class ExSprite:
 
     @property
     def pos(self):
-        return (self.x, self.y)
+        return Position(self.x, self.y)
 
     @property
     def angle(self):
