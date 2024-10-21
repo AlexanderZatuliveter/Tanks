@@ -1,13 +1,14 @@
 from typing import List
 import pygame
 import sys
+from block import Block
 from controls import Controls
 from game_field import GameField
 from kaboom import KaBoom
 from objects_manager import ObjectsManager
 from tank import Tank
 from bullet import Bullet
-from consts import SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT
+from consts import SCREEN_HEIGHT, SCREEN_WIDTH, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT
 from corner import Corner
 
 pygame.init()
@@ -75,7 +76,9 @@ green_tank = Tank(
 
 tanks = [blue_tank, red_tank, green_tank]
 
-game_field = GameField(50, 33)
+game_field = GameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, screen)
+
+block = Block()
 
 while True:
     screen.fill(bg_color)
@@ -99,7 +102,5 @@ while True:
                 bullet.destroy()
                 other_objects.append(KaBoom(tank.pos))
                 tank.renew()
-
-    game_field.draw_block(x=20, y=20, screen=screen)
 
     pygame.display.flip()

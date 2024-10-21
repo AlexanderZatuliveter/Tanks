@@ -12,6 +12,8 @@ class Bullet(ExSprite):
 
         self.speed = speed
         self.is_destroyed = False
+        
+        self.rect = self.get_rotated_rect()
 
     def destroy(self):
         self.is_destroyed = True
