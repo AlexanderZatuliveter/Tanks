@@ -8,7 +8,7 @@ from kaboom import KaBoom
 from objects_manager import ObjectsManager
 from tank import Tank
 from bullet import Bullet
-from consts import SCREEN_HEIGHT, SCREEN_WIDTH, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT
+from consts import HALF_SCREEN_HEIGHT, HALF_SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT
 from corner import Corner
 
 pygame.init()
@@ -80,6 +80,8 @@ game_field = GameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, screen)
 
 block = Block()
 
+font = pygame.font.Font("./fonts/NoizeSportFreeVertionRegular.ttf", 30)
+
 while True:
     screen.fill(bg_color)
 
@@ -102,5 +104,17 @@ while True:
                 bullet.destroy()
                 other_objects.append(KaBoom(tank.pos))
                 tank.renew()
+                bullet.tank.score_plus_one()
+
+    text_surface_green_tank = font.render(
+        f"Green_score:{green_tank.score}", True, (0, 80, 0))
+    text_surface_red_tank = font.render(
+        f"Red_score:{red_tank.score}", True, (80, 0, 0))
+    text_surface_blue_tank = font.render(
+        f"Blue_score:{blue_tank.score}", True, (0, 0, 120))
+
+    screen.blit(text_surface_green_tank, (SCREEN_WIDTH-300, SCREEN_HEIGHT-40))
+    screen.blit(text_surface_red_tank, (SCREEN_WIDTH-255, SCREEN_HEIGHT-SCREEN_HEIGHT))
+    screen.blit(text_surface_blue_tank, (SCREEN_WIDTH-(SCREEN_WIDTH-5), SCREEN_HEIGHT-SCREEN_HEIGHT))
 
     pygame.display.flip()

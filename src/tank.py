@@ -26,6 +26,8 @@ class Tank(ExSprite):
 
         self.controls = controls
 
+        self.score = 0
+
         self.max_y = SCREEN_HEIGHT - self.rect.height / 2
         self.max_x = SCREEN_WIDTH - self.rect.width / 2
 
@@ -83,23 +85,26 @@ class Tank(ExSprite):
         if keys[self.controls.fire]:
             self._fire()
 
+    def score_plus_one(self):
+        self.score += 1
+
     def _fire(self):
         if self._next_shot_time <= pygame.time.get_ticks():
             rect = self.get_rotated_rect()
             if self.angle == Direction.up:
-                new_bullet = Bullet(self.x, self.y - rect.height / 2, self.angle)
+                new_bullet = Bullet(self, self.x, self.y - rect.height / 2, self.angle)
                 self._bullets.append(new_bullet)
                 self.play_sound(self.fire_sound)
             elif self.angle == Direction.down:
-                new_bullet = Bullet(self.x, self.y + rect.height / 2, self.angle)
+                new_bullet = Bullet(self, self.x, self.y + rect.height / 2, self.angle)
                 self._bullets.append(new_bullet)
                 self.play_sound(self.fire_sound)
             elif self.angle == Direction.left:
-                new_bullet = Bullet(self.x - rect.width / 2, self.y, self.angle)
+                new_bullet = Bullet(self, self.x - rect.width / 2, self.y, self.angle)
                 self._bullets.append(new_bullet)
                 self.play_sound(self.fire_sound)
             elif self.angle == Direction.right:
-                new_bullet = Bullet(self.x + rect.width / 2, self.y, self.angle)
+                new_bullet = Bullet(self, self.x + rect.width / 2, self.y, self.angle)
                 self._bullets.append(new_bullet)
                 self.play_sound(self.fire_sound)
 
