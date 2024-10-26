@@ -1,7 +1,6 @@
 from typing import List
 import pygame
 import sys
-from block import Block
 from controls import Controls
 from game_field import GameField
 from kaboom import KaBoom
@@ -13,7 +12,7 @@ from corner import Corner
 
 pygame.init()
 
-bg_color = 128, 128, 0
+bg_color = (168, 168, 168)
 
 screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -76,14 +75,15 @@ green_tank = Tank(
 
 tanks = [blue_tank, red_tank, green_tank]
 
-game_field = GameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, screen)
+game_field = GameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT)
 
-block = Block()
+game_field.load_from_file()
 
 font = pygame.font.Font("./fonts/NoizeSportFreeVertionRegular.ttf", 30)
 
 while True:
     screen.fill(bg_color)
+    game_field.draw(screen)
 
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():

@@ -26,6 +26,7 @@
         "ndenumerate",
         "pygame",
         "RCTRL",
-        "SRCALPHA"
+        "SRCALPHA",
+        "tankmap"
     ]
 }

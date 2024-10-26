@@ -1,14 +1,14 @@
 from direction import Direction
 from ex_sprite import ExSprite
-from consts import SCREEN_HEIGHT, SCREEN_WIDTH
+from consts import BULLET_SPEED, SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class Bullet(ExSprite):
-    def __init__(self, tank, x, y, direction: Direction, speed: float = 1.5):
+    def __init__(self, tank, x, y, direction: Direction):
 
         super().__init__('images/bullet.png', x, y, direction)
 
-        self.speed = speed
+        self.speed = BULLET_SPEED
         self.is_destroyed = False
 
         self.rect = self.get_rotated_rect()

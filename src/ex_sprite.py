@@ -1,5 +1,6 @@
 import pygame
 from consts import IS_DEBUG
+from image_loader import ImageLoader
 from position import Position
 
 
@@ -10,7 +11,7 @@ class ExSprite:
         self.x = x
         self.y = y
         # Load an image
-        self.image = pygame.image.load(image_path)
+        self.image = ImageLoader.get_image(image_path)
         self.__angle = 0
         self.angle = angle
 

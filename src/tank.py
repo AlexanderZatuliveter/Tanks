@@ -3,7 +3,7 @@ import pygame
 from direction import Direction
 from ex_sprite import ExSprite
 from bullet import Bullet
-from consts import SCREEN_HEIGHT, SCREEN_WIDTH
+from consts import SCREEN_HEIGHT, SCREEN_WIDTH, TANK_SPEED
 from controls import Controls
 from corner import Corner
 from objects_manager import ObjectsManager
@@ -36,7 +36,7 @@ class Tank(ExSprite):
 
         self._next_shot_time = 0
         self.shot_speed_ms = 750
-        self.speed = 0.4
+        self.speed = TANK_SPEED
 
         self.screen = screen
         self.angle: Direction
