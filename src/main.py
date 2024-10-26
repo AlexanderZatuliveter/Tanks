@@ -7,14 +7,12 @@ from kaboom import KaBoom
 from objects_manager import ObjectsManager
 from tank import Tank
 from bullet import Bullet
-from consts import HALF_SCREEN_HEIGHT, HALF_SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT
+from consts import BACKGROUND_COLOR, HALF_SCREEN_HEIGHT, HALF_SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT
 from corner import Corner
 
 pygame.init()
 
-bg_color = (168, 168, 168)
-
-screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # , pygame.HWSURFACE)
 
 other_objects = ObjectsManager()
 
@@ -81,8 +79,16 @@ game_field.load_from_file()
 
 font = pygame.font.Font("./fonts/NoizeSportFreeVertionRegular.ttf", 30)
 
+# clock = pygame.time.Clock()
+screen.fill(BACKGROUND_COLOR)
+
 while True:
-    screen.fill(bg_color)
+
+    for tank in tanks:
+        tank.draw_background(screen)
+
+    other_objects.draw_background(screen)
+
     game_field.draw(screen)
 
     keys = pygame.key.get_pressed()
@@ -95,8 +101,9 @@ while True:
         tank.draw(screen)
         tank.update()
 
-    other_objects.draw(screen)
     other_objects.update()
+
+    other_objects.draw(screen)
 
     for bullet in other_objects.get_object(Bullet):
         for tank in tanks:
@@ -118,3 +125,4 @@ while True:
     screen.blit(text_surface_blue_tank, (SCREEN_WIDTH-(SCREEN_WIDTH-5), SCREEN_HEIGHT-SCREEN_HEIGHT))
 
     pygame.display.flip()
+    # clock.tick(60)  # Limit to 60 frames per second

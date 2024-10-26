@@ -15,8 +15,6 @@ mouse = Mouse()
 
 game_field = GameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT)
 
-clock = pygame.time.Clock()
-
 while True:
     screen.fill(bg_color)
 
@@ -39,6 +37,3 @@ while True:
     mouse.update(game_field)
 
     pygame.display.update()
-
-    # Control the frame rate
-    clock.tick(20)  # Limit the loop to 'fps' frames per second

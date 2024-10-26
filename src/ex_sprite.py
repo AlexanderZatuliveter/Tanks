@@ -1,12 +1,13 @@
 import pygame
-from consts import IS_DEBUG
+from consts import BACKGROUND_COLOR, IS_DEBUG
 from image_loader import ImageLoader
 from position import Position
 
 
-class ExSprite:
+class ExSprite(pygame.sprite.Sprite):
 
     def __init__(self, image_path: str, x: float = 0, y: float = 0, angle: float = 0):
+        super().__init__()
         # x, y - center of sprite
         self.x = x
         self.y = y
@@ -41,3 +42,12 @@ class ExSprite:
             pygame.draw.circle(screen, (0, 220, 0), rotated_rect.center, 10, 1)
             pygame.draw.rect(screen, (0, 0, 220), rotated_rect, 1)
             pygame.draw.circle(screen, (100, 220, 150), (self.x, self.y), 6.0, 1)
+
+    def draw_background(self, screen: pygame.Surface):
+        rect = self.get_rotated_rect()
+        new_width = rect.width + 40
+        new_height = rect.height + 40
+        new_x = rect.x - 20
+        new_y = rect.y - 20
+        rect = pygame.Rect(new_x, new_y, new_width, new_height)
+        pygame.draw.rect(screen, BACKGROUND_COLOR, rect)  # (new_x, new_y, new_width, new_height))
