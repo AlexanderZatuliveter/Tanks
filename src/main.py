@@ -79,7 +79,7 @@ game_field.load_from_file()
 
 font = pygame.font.Font("./fonts/NoizeSportFreeVertionRegular.ttf", 30)
 
-# clock = pygame.time.Clock()
+clock = pygame.time.Clock()
 screen.fill(BACKGROUND_COLOR)
 
 while True:
@@ -89,7 +89,21 @@ while True:
 
     other_objects.draw_background(screen)
 
-    game_field.draw(screen)
+    text_surface_green_tank = font.render(
+        f"Green_score:{green_tank.score}", True, (0, 80, 0))
+    text_surface_red_tank = font.render(
+        f"Red_score:{red_tank.score}", True, (80, 0, 0))
+    text_surface_blue_tank = font.render(
+        f"Blue_score:{blue_tank.score}", True, (0, 0, 120))
+
+    tank.score_on_screen(screen, SCREEN_WIDTH-325, SCREEN_HEIGHT-40,
+                         text_surface_green_tank, text_surface_green_tank.get_rect())
+    tank.score_on_screen(screen, SCREEN_WIDTH-300, 0,
+                         text_surface_red_tank, text_surface_red_tank.get_rect())
+    tank.score_on_screen(screen, 5, 0,
+                         text_surface_blue_tank, text_surface_blue_tank.get_rect())
+
+    game_field.draw(screen)  # todo: draw only once at the beginning, and draw only modified blocks.
 
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -113,16 +127,5 @@ while True:
                 tank.renew()
                 bullet.tank.score_plus_one()
 
-    text_surface_green_tank = font.render(
-        f"Green_score:{green_tank.score}", True, (0, 80, 0))
-    text_surface_red_tank = font.render(
-        f"Red_score:{red_tank.score}", True, (80, 0, 0))
-    text_surface_blue_tank = font.render(
-        f"Blue_score:{blue_tank.score}", True, (0, 0, 120))
-
-    screen.blit(text_surface_green_tank, (SCREEN_WIDTH-300, SCREEN_HEIGHT-40))
-    screen.blit(text_surface_red_tank, (SCREEN_WIDTH-255, SCREEN_HEIGHT-SCREEN_HEIGHT))
-    screen.blit(text_surface_blue_tank, (SCREEN_WIDTH-(SCREEN_WIDTH-5), SCREEN_HEIGHT-SCREEN_HEIGHT))
-
     pygame.display.flip()
-    # clock.tick(60)  # Limit to 60 frames per second
+    clock.tick(60)  # Limit to 60 frames per second

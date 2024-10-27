@@ -3,7 +3,7 @@ import pygame
 from direction import Direction
 from ex_sprite import ExSprite
 from bullet import Bullet
-from consts import SCREEN_HEIGHT, SCREEN_WIDTH, TANK_SPEED
+from consts import BACKGROUND_COLOR, SCREEN_HEIGHT, SCREEN_WIDTH, TANK_SPEED
 from controls import Controls
 from corner import Corner
 from objects_manager import ObjectsManager
@@ -109,3 +109,8 @@ class Tank(ExSprite):
                 self.play_sound(self.fire_sound)
 
             self._next_shot_time = pygame.time.get_ticks() + self.shot_speed_ms
+            
+    def score_on_screen(self, screen, pos_x, pos_y, text, rect):
+        pygame.draw.rect(screen, BACKGROUND_COLOR, (pos_x, pos_y,
+                        rect.width+30, rect.height+30))
+        screen.blit(text, (pos_x, pos_y))
