@@ -1,6 +1,6 @@
 import numpy as np
+import pygame
 from block import Block
-from consts import BLOCK_SIZE
 from position import IntPosition
 import json
 
@@ -40,11 +40,18 @@ class GameField:
             by * self.__block_size
         )
 
-    def get_block_field_position(self, x, y):
+    def get_block_field_position(self, x: float, y: float):
         return IntPosition(
             int(x // self.__block_size),
             int(y // self.__block_size)
         )
+
+    def colliderect_with(self, rect: pygame.Rect):
+        block_pos = self.get_block_field_position(rect.x, rect.y)
+        block = self.field[block_pos.x][block_pos.y]
+        if block and rect.colliderect(block_pos.x * self.__block_size, block_pos.y * self.__block_size, block.rect.width, block.rect.height):
+            return True
+        return False
 
     def put_block_by_screen_pos(self, x, y):
         pos = self.get_block_field_position(x, y)

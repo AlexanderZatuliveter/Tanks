@@ -6,9 +6,6 @@ from image_loader import ImageLoader
 class Block(pygame.sprite.Sprite):
 
     def __init__(self):
-
-        self.size = 50
-
         self.image = ImageLoader.get_image('./images/block.png')
         self.rect = self.image.get_rect()
 

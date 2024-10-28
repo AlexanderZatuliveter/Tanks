@@ -3,9 +3,10 @@ import pygame
 from direction import Direction
 from ex_sprite import ExSprite
 from bullet import Bullet
-from consts import BACKGROUND_COLOR, SCREEN_HEIGHT, SCREEN_WIDTH, TANK_SPEED
+from consts import BACKGROUND_COLOR, BLOCK_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, TANK_SPEED
 from controls import Controls
 from corner import Corner
+from game_field import GameField
 from objects_manager import ObjectsManager
 
 
@@ -18,7 +19,8 @@ class Tank(ExSprite):
         bullets: ObjectsManager,
         image_path: str,
         controls: Controls,
-        start_corner: Corner
+        start_corner: Corner,
+        game_field: GameField
     ):
         super().__init__(image_path, x, y)
 
@@ -47,6 +49,7 @@ class Tank(ExSprite):
         self.fire_sound = "./sounds/fire_sound.mp3"
 
         self.start_corner = start_corner
+        self.game_field = game_field
 
     def play_sound(self, path):
         pygame.mixer.init()
@@ -70,18 +73,31 @@ class Tank(ExSprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[self.controls.up_key] and self.y >= self.min_y:
-            self.y -= self.speed
-            self.angle = Direction.up
-        elif keys[self.controls.down_key] and self.y <= self.max_y:
-            self.y += self.speed
-            self.angle = Direction.down
-        elif keys[self.controls.left_key] and self.x >= self.min_x:
-            self.x -= self.speed
-            self.angle = Direction.left
-        elif keys[self.controls.right_key] and self.x <= self.max_x:
-            self.x += self.speed
-            self.angle = Direction.right
+        rotated_rect = self.get_rotated_rect()
+        if keys[self.controls.up_key] and self.y >= self.min_y + self.speed:
+            rect = pygame.Rect(rotated_rect.left, rotated_rect.top - self.speed,
+                               rotated_rect.width, rotated_rect.height)
+            if not self.game_field.colliderect_with(rect):
+                self.y -= self.speed
+                self.angle = Direction.up
+        elif keys[self.controls.down_key] and self.y <= self.max_y - self.speed:
+            rect = pygame.Rect(rotated_rect.left, rotated_rect.top + self.speed + BLOCK_SIZE,
+                               rotated_rect.width, rotated_rect.height)
+            if not self.game_field.colliderect_with(rect):
+                self.y += self.speed
+                self.angle = Direction.down
+        elif keys[self.controls.left_key] and self.x >= self.min_x + self.speed:
+            rect = pygame.Rect(rotated_rect.left - self.speed, rotated_rect.top,
+                               rotated_rect.width, rotated_rect.height)
+            if not self.game_field.colliderect_with(rect):
+                self.x -= self.speed
+                self.angle = Direction.left
+        elif keys[self.controls.right_key] and self.x <= self.max_x - self.speed:
+            rect = pygame.Rect(rotated_rect.left + self.speed + BLOCK_SIZE, rotated_rect.top,
+                               rotated_rect.width, rotated_rect.height)
+            if not self.game_field.colliderect_with(rect):
+                self.x += self.speed
+                self.angle = Direction.right
         if keys[self.controls.fire]:
             self._fire()
 
@@ -109,8 +125,8 @@ class Tank(ExSprite):
                 self.play_sound(self.fire_sound)
 
             self._next_shot_time = pygame.time.get_ticks() + self.shot_speed_ms
-            
+
     def score_on_screen(self, screen, pos_x, pos_y, text, rect):
         pygame.draw.rect(screen, BACKGROUND_COLOR, (pos_x, pos_y,
-                        rect.width+30, rect.height+30))
+                                                    rect.width+30, rect.height+30))
         screen.blit(text, (pos_x, pos_y))

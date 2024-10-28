@@ -1,6 +1,7 @@
 from typing import List
 import pygame
 import sys
+from block import Block
 from controls import Controls
 from game_field import GameField
 from kaboom import KaBoom
@@ -15,6 +16,7 @@ pygame.init()
 screen: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # , pygame.HWSURFACE)
 
 other_objects = ObjectsManager()
+game_field = GameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT)
 
 player1_controls = Controls(
     up_key=pygame.K_w,
@@ -48,7 +50,8 @@ blue_tank = Tank(
     bullets=other_objects,
     image_path='images/blue_tank.png',
     controls=player1_controls,
-    start_corner=Corner.top_left
+    start_corner=Corner.top_left,
+    game_field=game_field
 )
 
 red_tank = Tank(
@@ -58,7 +61,8 @@ red_tank = Tank(
     bullets=other_objects,
     image_path='images/red_tank.png',
     controls=player2_controls,
-    start_corner=Corner.top_right
+    start_corner=Corner.top_right,
+    game_field=game_field
 )
 
 green_tank = Tank(
@@ -68,16 +72,18 @@ green_tank = Tank(
     bullets=other_objects,
     image_path='images/green_tank.png',
     controls=player3_controls,
-    start_corner=Corner.down_right
+    start_corner=Corner.down_right,
+    game_field=game_field
 )
 
 tanks = [blue_tank, red_tank, green_tank]
 
-game_field = GameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT)
 
 game_field.load_from_file()
 
 font = pygame.font.Font("./fonts/NoizeSportFreeVertionRegular.ttf", 30)
+
+block = Block()
 
 clock = pygame.time.Clock()
 screen.fill(BACKGROUND_COLOR)
@@ -126,6 +132,7 @@ while True:
                 other_objects.append(KaBoom(tank.pos))
                 tank.renew()
                 bullet.tank.score_plus_one()
+            
 
     pygame.display.flip()
     clock.tick(60)  # Limit to 60 frames per second
