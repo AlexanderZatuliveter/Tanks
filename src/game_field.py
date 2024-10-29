@@ -54,16 +54,6 @@ class GameField:
             return True
         return False
 
-    def bullet_colliderect_block(self, rect: pygame.Rect, bullet):
-        is_colliderect = self._colliderect_with(rect)
-        block_pos = self.get_block_field_position(rect.x, rect.y)
-        if is_colliderect:
-            block = self.field[block_pos.x][block_pos.y]
-            if block:
-                block.is_destroyed = True
-                self.field[block_pos.x][block_pos.y] = None
-                bullet.destroy()
-
     def put_block_by_screen_pos(self, x, y):
         pos = self.get_block_field_position(x, y)
         self.put_block(pos)

@@ -132,7 +132,13 @@ while True:
                 other_objects.append(KaBoom(tank.pos))
                 tank.renew()
                 bullet.tank.score_plus_one()
-        game_field.bullet_colliderect_block(bullet.get_rotated_rect(), bullet)
+        if game_field._colliderect_with(bullet.get_rotated_rect()):
+            block_pos = game_field.get_block_field_position(bullet.x, bullet.y)
+            block = game_field.field[block_pos.x][block_pos.y]
+            if block:
+                block.is_destroyed = True
+                game_field.field[block_pos.x, block_pos.y] = None
+                bullet.destroy()
 
     pygame.display.flip()
     clock.tick(60)
