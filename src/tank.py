@@ -59,40 +59,58 @@ class Tank(ExSprite):
     def renew(self):
         self.play_sound(self.death_sound)
         if self.start_corner == Corner.top_left:
-            self.x = self.min_x
-            self.y = self.min_y
+            self.x = self.min_x + self.speed
+            self.y = self.min_y + self.speed
         if self.start_corner == Corner.top_right:
-            self.x = self.max_x
-            self.y = self.min_y
+            self.x = self.max_x - self.speed
+            self.y = self.min_y + self.speed
         if self.start_corner == Corner.down_right:
-            self.x = self.max_x
-            self.y = self.max_y
+            self.x = self.max_x - self.speed
+            self.y = self.max_y - self.speed
         if self.start_corner == Corner.down_left:
-            self.x = self.min_x
-            self.y = self.max_y
+            self.x = self.min_x + self.speed
+            self.y = self.max_y - self.speed
+
+    def _modify_rect(self, difx, dify, rect: pygame.Rect):
+        return pygame.Rect(difx+rect.x, dify+rect.y, rect.width, rect.height)
 
     def update(self):
         keys = pygame.key.get_pressed()
         rotated_rect = self.get_rotated_rect()
 
         if keys[self.controls.up_key] and self.y >= self.min_y + self.speed:
-            rect = pygame.Rect(rotated_rect.left, rotated_rect.top - self.speed,
-                               rotated_rect.width, rotated_rect.height)
-            if not self.game_field._colliderect_with(rect):
+            x1 = rotated_rect.x
+            x2 = rotated_rect.x + rotated_rect.width
+            y = self.y - rotated_rect.height / 2 - self.speed
+            rect = self._modify_rect(0, -self.speed, rotated_rect)
+            if IS_DEBUG:
+                pygame.draw.circle(self.screen, (200, 250, 0), (x1, y), 8, 1)
+                pygame.draw.circle(self.screen, (200, 250, 0), (x2, y), 8, 1)
+            if not self.game_field.colliderect_with(x1, y, rect) and not self.game_field.colliderect_with(x2, y, rect):
                 self.y -= self.speed
                 self.angle = Direction.up
 
         elif keys[self.controls.down_key] and self.y <= self.max_y - self.speed:
-            rect = pygame.Rect(rotated_rect.left, rotated_rect.top + self.speed,
-                               rotated_rect.width, rotated_rect.height)
-            if not self.game_field._colliderect_with(rect):
+            x1 = rotated_rect.x
+            x2 = rotated_rect.x + rotated_rect.width
+            y = self.y + rotated_rect.height / 2 + self.speed
+            rect = self._modify_rect(0, +self.speed, rotated_rect)
+            if IS_DEBUG:
+                pygame.draw.circle(self.screen, (200, 250, 0), (x1, y), 8, 1)
+                pygame.draw.circle(self.screen, (200, 250, 0), (x2, y), 8, 1)
+            if not self.game_field.colliderect_with(x1, y, rect) and not self.game_field.colliderect_with(x2, y, rect):
                 self.y += self.speed
                 self.angle = Direction.down
 
         elif keys[self.controls.left_key] and self.x >= self.min_x + self.speed:
-            rect = pygame.Rect(rotated_rect.left - self.speed, rotated_rect.top,
-                               rotated_rect.width, rotated_rect.height)
-            if not self.game_field._colliderect_with(rect):
+            x = self.x - rotated_rect.width / 2 - self.speed
+            y1 = rotated_rect.y
+            y2 = rotated_rect.y + rotated_rect.height
+            rect = self._modify_rect(-self.speed, 0, rotated_rect)
+            if IS_DEBUG:
+                pygame.draw.circle(self.screen, (200, 250, 0), (x, y1), 8, 1)
+                pygame.draw.circle(self.screen, (200, 250, 0), (x, y2), 8, 1)
+            if not self.game_field.colliderect_with(x, y1, rect) and not self.game_field.colliderect_with(x, y2, rect):
                 self.x -= self.speed
                 self.angle = Direction.left
 
@@ -100,10 +118,11 @@ class Tank(ExSprite):
             x = self.x + rotated_rect.width / 2 + self.speed
             y1 = rotated_rect.y
             y2 = rotated_rect.y + rotated_rect.height
+            rect = self._modify_rect(+self.speed, 0, rotated_rect)
             if IS_DEBUG:
-                pygame.draw.circle(self.screen, (200, 250, 0), (x, y1), 10, 1)
-                pygame.draw.circle(self.screen, (200, 250, 0), (x, y2), 10, 1)
-            if not self.game_field.colliderect_with(x, y1, rotated_rect) and not self.game_field.colliderect_with(x, y2, rotated_rect):
+                pygame.draw.circle(self.screen, (200, 250, 0), (x, y1), 8, 1)
+                pygame.draw.circle(self.screen, (200, 250, 0), (x, y2), 8, 1)
+            if not self.game_field.colliderect_with(x, y1, rect) and not self.game_field.colliderect_with(x, y2, rect):
                 self.x += self.speed
                 self.angle = Direction.right
 
