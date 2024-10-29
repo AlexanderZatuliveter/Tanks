@@ -3,7 +3,7 @@ import pygame
 from direction import Direction
 from ex_sprite import ExSprite
 from bullet import Bullet
-from consts import BACKGROUND_COLOR, BLOCK_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, TANK_SPEED
+from consts import BACKGROUND_COLOR, IS_DEBUG, SCREEN_HEIGHT, SCREEN_WIDTH, TANK_SPEED
 from controls import Controls
 from corner import Corner
 from game_field import GameField
@@ -74,30 +74,39 @@ class Tank(ExSprite):
     def update(self):
         keys = pygame.key.get_pressed()
         rotated_rect = self.get_rotated_rect()
+
         if keys[self.controls.up_key] and self.y >= self.min_y + self.speed:
             rect = pygame.Rect(rotated_rect.left, rotated_rect.top - self.speed,
                                rotated_rect.width, rotated_rect.height)
-            if not self.game_field.colliderect_with(rect):
+            if not self.game_field._colliderect_with(rect):
                 self.y -= self.speed
                 self.angle = Direction.up
+
         elif keys[self.controls.down_key] and self.y <= self.max_y - self.speed:
-            rect = pygame.Rect(rotated_rect.left, rotated_rect.top + self.speed + BLOCK_SIZE,
+            rect = pygame.Rect(rotated_rect.left, rotated_rect.top + self.speed,
                                rotated_rect.width, rotated_rect.height)
-            if not self.game_field.colliderect_with(rect):
+            if not self.game_field._colliderect_with(rect):
                 self.y += self.speed
                 self.angle = Direction.down
+
         elif keys[self.controls.left_key] and self.x >= self.min_x + self.speed:
             rect = pygame.Rect(rotated_rect.left - self.speed, rotated_rect.top,
                                rotated_rect.width, rotated_rect.height)
-            if not self.game_field.colliderect_with(rect):
+            if not self.game_field._colliderect_with(rect):
                 self.x -= self.speed
                 self.angle = Direction.left
+
         elif keys[self.controls.right_key] and self.x <= self.max_x - self.speed:
-            rect = pygame.Rect(rotated_rect.left + self.speed + BLOCK_SIZE, rotated_rect.top,
-                               rotated_rect.width, rotated_rect.height)
-            if not self.game_field.colliderect_with(rect):
+            x = self.x + rotated_rect.width / 2 + self.speed
+            y1 = rotated_rect.y
+            y2 = rotated_rect.y + rotated_rect.height
+            if IS_DEBUG:
+                pygame.draw.circle(self.screen, (200, 250, 0), (x, y1), 10, 1)
+                pygame.draw.circle(self.screen, (200, 250, 0), (x, y2), 10, 1)
+            if not self.game_field.colliderect_with(x, y1, rotated_rect) and not self.game_field.colliderect_with(x, y2, rotated_rect):
                 self.x += self.speed
                 self.angle = Direction.right
+
         if keys[self.controls.fire]:
             self._fire()
 

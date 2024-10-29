@@ -44,10 +44,11 @@ class ExSprite(pygame.sprite.Sprite):
             pygame.draw.circle(screen, (100, 220, 150), (self.x, self.y), 6.0, 1)
 
     def draw_background(self, screen: pygame.Surface):
+        size = 100
         rect = self.get_rotated_rect()
-        new_width = rect.width + 40
-        new_height = rect.height + 40
-        new_x = rect.x - 20
-        new_y = rect.y - 20
+        new_width = rect.width + size
+        new_height = rect.height + size
+        new_x = rect.x - size / 2
+        new_y = rect.y - size / 2
         rect = pygame.Rect(new_x, new_y, new_width, new_height)
         pygame.draw.rect(screen, BACKGROUND_COLOR, rect)  # (new_x, new_y, new_width, new_height))

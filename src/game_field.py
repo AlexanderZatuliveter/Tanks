@@ -1,27 +1,16 @@
 import numpy as np
 import pygame
 from block import Block
+from consts import IS_DEBUG
 from position import IntPosition
 import json
 
 
 class GameField:
     def __init__(self, x, y):
-        self.blocks = []
-
         self.__block_size = 50
-
         self.field = np.zeros(shape=(x, y), dtype=object)
         self.field.fill(None)
-
-        # for i in range(x):
-        #     self.field[i][0] = Block()
-        #     self.field[i][y-1] = Block()
-
-        # for j in range(y):
-        #     if j != 0 and j != y-1:
-        #         self.field[0][j] = Block()
-        #         self.field[x-1][j] = Block()
 
     def update(self):
         for (x, y), block in np.ndenumerate(self.field):
@@ -33,6 +22,8 @@ class GameField:
             if block:
                 pos = self._get_block_position(bx, by)
                 block.draw(screen, pos)
+                if IS_DEBUG:
+                    pygame.draw.rect(screen, (0, 0, 220), self._get_block_rect(bx, by), 1)
 
     def _get_block_position(self, bx, by):
         return (
@@ -46,12 +37,32 @@ class GameField:
             int(y // self.__block_size)
         )
 
-    def colliderect_with(self, rect: pygame.Rect):
+    def _get_block_rect(self, x: int, y: int):
+        return pygame.Rect(x * self.__block_size, y * self.__block_size, self.__block_size, self.__block_size)
+
+    def colliderect_with(self, x, y, rect: pygame.Rect):
+        block_pos = self.get_block_field_position(x, y)
+        block = self.field[block_pos.x][block_pos.y]
+        if block and rect.colliderect(self._get_block_rect(block_pos.x, block_pos.y)):
+            return True
+        return False
+
+    def _colliderect_with(self, rect: pygame.Rect):
         block_pos = self.get_block_field_position(rect.x, rect.y)
         block = self.field[block_pos.x][block_pos.y]
         if block and rect.colliderect(block_pos.x * self.__block_size, block_pos.y * self.__block_size, block.rect.width, block.rect.height):
             return True
         return False
+
+    def bullet_colliderect_block(self, rect: pygame.Rect, bullet):
+        is_colliderect = self._colliderect_with(rect)
+        block_pos = self.get_block_field_position(rect.x, rect.y)
+        if is_colliderect:
+            block = self.field[block_pos.x][block_pos.y]
+            if block:
+                block.is_destroyed = True
+                self.field[block_pos.x][block_pos.y] = None
+                bullet.destroy()
 
     def put_block_by_screen_pos(self, x, y):
         pos = self.get_block_field_position(x, y)
