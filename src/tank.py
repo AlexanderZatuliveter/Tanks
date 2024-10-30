@@ -86,9 +86,9 @@ class Tank(ExSprite):
             if IS_DEBUG:
                 pygame.draw.circle(self.screen, (200, 250, 0), (x1, y), 8, 1)
                 pygame.draw.circle(self.screen, (200, 250, 0), (x2, y), 8, 1)
+            self.angle = Direction.up
             if not self.game_field.colliderect_with(x1, y, rect) and not self.game_field.colliderect_with(x2, y, rect):
                 self.y -= self.speed
-                self.angle = Direction.up
 
         elif keys[self.controls.down_key] and self.y <= self.max_y - self.speed:
             x1 = rotated_rect.x
@@ -98,9 +98,9 @@ class Tank(ExSprite):
             if IS_DEBUG:
                 pygame.draw.circle(self.screen, (200, 250, 0), (x1, y), 8, 1)
                 pygame.draw.circle(self.screen, (200, 250, 0), (x2, y), 8, 1)
+            self.angle = Direction.down
             if not self.game_field.colliderect_with(x1, y, rect) and not self.game_field.colliderect_with(x2, y, rect):
                 self.y += self.speed
-                self.angle = Direction.down
 
         elif keys[self.controls.left_key] and self.x >= self.min_x + self.speed:
             x = self.x - rotated_rect.width / 2 - self.speed
@@ -110,9 +110,9 @@ class Tank(ExSprite):
             if IS_DEBUG:
                 pygame.draw.circle(self.screen, (200, 250, 0), (x, y1), 8, 1)
                 pygame.draw.circle(self.screen, (200, 250, 0), (x, y2), 8, 1)
+            self.angle = Direction.left
             if not self.game_field.colliderect_with(x, y1, rect) and not self.game_field.colliderect_with(x, y2, rect):
                 self.x -= self.speed
-                self.angle = Direction.left
 
         elif keys[self.controls.right_key] and self.x <= self.max_x - self.speed:
             x = self.x + rotated_rect.width / 2 + self.speed
@@ -122,9 +122,9 @@ class Tank(ExSprite):
             if IS_DEBUG:
                 pygame.draw.circle(self.screen, (200, 250, 0), (x, y1), 8, 1)
                 pygame.draw.circle(self.screen, (200, 250, 0), (x, y2), 8, 1)
+            self.angle = Direction.right
             if not self.game_field.colliderect_with(x, y1, rect) and not self.game_field.colliderect_with(x, y2, rect):
                 self.x += self.speed
-                self.angle = Direction.right
 
         if keys[self.controls.fire]:
             self._fire()
