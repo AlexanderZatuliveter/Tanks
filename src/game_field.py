@@ -42,9 +42,12 @@ class GameField:
 
     def colliderect_with(self, x, y, rect: pygame.Rect):
         block_pos = self.get_block_field_position(x, y)
-        block = self.field[block_pos.x][block_pos.y]
-        if block and rect.colliderect(self._get_block_rect(block_pos.x, block_pos.y)):
-            return True
+        
+        if 0 <= block_pos.x < len(self.field) and 0 <= block_pos.y < len(self.field[0]):
+            block = self.field[block_pos.x][block_pos.y]
+            if block and rect.colliderect(self._get_block_rect(block_pos.x, block_pos.y)):
+                return True
+            
         return False
 
     def _colliderect_with(self, rect: pygame.Rect):

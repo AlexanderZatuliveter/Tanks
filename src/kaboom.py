@@ -4,10 +4,16 @@ from consts import BACKGROUND_COLOR
 
 
 class KaBoom(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, frames_type):
         super().__init__()
-        self.frames = [pygame.image.load(f'./images/explosion/{n}.png') for n in range(1, 7)]
-        self.frame_speed_ms = 45
+        if frames_type == "tank":
+            self.frames = [pygame.image.load(f'./images/tank_explosion/{n}.png') for n in range(1, 7)]
+            self.frame_speed_ms = 45
+        elif frames_type == "block":
+            self.frames = [pygame.image.load(f'./images/block_explosion/{n}.png') for n in range(1, 10)]
+            self.frame_speed_ms = 30
+        else:
+            raise Exception(f"Unknown frame type. {frames_type=}")
         self._start_time = pygame.time.get_ticks()
         self._frame = 0
         self._pos = pos
@@ -22,8 +28,6 @@ class KaBoom(pygame.sprite.Sprite):
         self._frame = min(self._frame, self._frames_count - 1)
 
     def draw(self, screen):
-        # if self.is_destroyed:
-        #     self.draw_background(screen)
         frame_image = self.frames[self._frame]
         rect = frame_image.get_rect()
         screen.blit(frame_image, (self._pos.x - rect.width / 2, self._pos.y - rect.height / 2))

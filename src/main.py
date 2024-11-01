@@ -130,7 +130,7 @@ while True:
         for tank in tanks:
             if tank.get_rotated_rect().collidepoint(bullet.x, bullet.y):
                 bullet.destroy()
-                other_objects.append(KaBoom(tank.pos))
+                other_objects.append(KaBoom(tank.pos, "tank"))
                 tank.renew()
                 bullet.tank.score_plus_one()
         if game_field._colliderect_with(bullet.get_rotated_rect()):
@@ -139,6 +139,9 @@ while True:
             if block:
                 block.fire()
                 bullet.destroy()
+                if block._health <= 0:
+                    other_objects.append(KaBoom(bullet.pos, "block"))
+                    pygame.mixer.Sound("./sounds/death_sound.mp3").play()
 
     pygame.display.flip()
     clock.tick(60)
