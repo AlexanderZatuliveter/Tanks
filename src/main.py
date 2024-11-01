@@ -32,7 +32,7 @@ player2_controls = Controls(
     down_key=pygame.K_DOWN,
     left_key=pygame.K_LEFT,
     right_key=pygame.K_RIGHT,
-    fire=pygame.K_RCTRL
+    fire=pygame.K_RSHIFT
 )
 
 player3_controls = Controls(
@@ -142,6 +142,11 @@ while True:
                 if block._health <= 0:
                     other_objects.append(KaBoom(bullet.pos, "block"))
                     pygame.mixer.Sound("./sounds/death_sound.mp3").play()
-
+        for bullet1 in other_objects.get_object(Bullet):
+            for bullet2 in other_objects.get_object(Bullet):
+                if bullet1 != bullet2 and bullet1.get_rotated_rect().colliderect(bullet2.get_rotated_rect()):
+                    bullet1.destroy()
+                    bullet2.destroy()
+                    
     pygame.display.flip()
     clock.tick(60)
