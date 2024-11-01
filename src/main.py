@@ -110,6 +110,7 @@ while True:
     tank.score_on_screen(screen, 5, 0,
                          text_surface_blue_tank, text_surface_blue_tank.get_rect())
 
+    game_field.update()
     game_field.draw(screen)  # todo: draw only once at the beginning, and draw only modified blocks.
 
     keys = pygame.key.get_pressed()
@@ -136,8 +137,7 @@ while True:
             block_pos = game_field.get_block_field_position(bullet.x, bullet.y)
             block = game_field.field[block_pos.x][block_pos.y]
             if block:
-                block.is_destroyed = True
-                game_field.field[block_pos.x, block_pos.y] = None
+                block.fire()
                 bullet.destroy()
 
     pygame.display.flip()

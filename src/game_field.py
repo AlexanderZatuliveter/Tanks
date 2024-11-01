@@ -14,8 +14,8 @@ class GameField:
 
     def update(self):
         for (x, y), block in np.ndenumerate(self.field):
-            if block is not None:
-                block.update()
+            if block and block.is_destroyed:
+                self.field[x, y] = None
 
     def draw(self, screen):
         for (bx, by), block in np.ndenumerate(self.field):
