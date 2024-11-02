@@ -19,7 +19,7 @@ class Block(pygame.sprite.Sprite):
         return self._health <= 0
 
     def fire(self):
-        self._health -= 1
+        self._health -= 2
 
     def draw(self, screen, pos):
         if not self.is_destroyed:
