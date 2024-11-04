@@ -8,7 +8,7 @@ from kaboom import KaBoom
 from objects_manager import ObjectsManager
 from tank import Tank
 from bullet import Bullet
-from consts import BACKGROUND_COLOR, SCREEN_HEIGHT, SCREEN_WIDTH, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT
+from consts import BACKGROUND_COLOR, BLOCK_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT
 from corner import Corner
 
 pygame.init()
@@ -45,8 +45,8 @@ player3_controls = Controls(
 
 
 blue_tank = Tank(
-    x=SCREEN_WIDTH//2.25,
-    y=SCREEN_HEIGHT//2.25,
+    x=0+BLOCK_SIZE/2,
+    y=0+BLOCK_SIZE/2,
     screen=screen,
     bullets=other_objects,
     image_path='images/blue_tank.png',
@@ -56,8 +56,8 @@ blue_tank = Tank(
 )
 
 red_tank = Tank(
-    x=SCREEN_WIDTH//2.25,
-    y=SCREEN_HEIGHT//2.25,
+    x=SCREEN_WIDTH-BLOCK_SIZE/2,
+    y=0+BLOCK_SIZE/2,
     screen=screen,
     bullets=other_objects,
     image_path='images/red_tank.png',
@@ -67,8 +67,8 @@ red_tank = Tank(
 )
 
 green_tank = Tank(
-    x=SCREEN_WIDTH//2.25,
-    y=SCREEN_HEIGHT//2.25,
+    x=SCREEN_WIDTH-BLOCK_SIZE/2,
+    y=SCREEN_HEIGHT-BLOCK_SIZE/2,
     screen=screen,
     bullets=other_objects,
     image_path='images/green_tank.png',
