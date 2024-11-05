@@ -29,6 +29,8 @@ class Tank(ExSprite):
         self.controls = controls
 
         self.score = 0
+        
+        self.size = 50
 
         self.max_y = SCREEN_HEIGHT - self.rect.height / 2
         self.max_x = SCREEN_WIDTH - self.rect.width / 2
