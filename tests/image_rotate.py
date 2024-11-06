@@ -39,8 +39,8 @@ while running:
 
     # Draw the rotated image
     screen.blit(rotated_image, rotated_rect.topleft)
-    pygame.draw.circle(screen, (200, 0, 0), rotated_rect.topleft, 10)
-    pygame.draw.circle(screen, (0, 220, 0), rotated_rect.center, 10)
+    pygame.draw.circle(screen, (200, 0, 0), rotated_rect.topleft, 5)
+    pygame.draw.circle(screen, (0, 220, 0), rotated_rect.center, 5)
     pygame.draw.rect(screen, (0, 0, 220), rotated_rect, 1)
     pygame.draw.rect(screen, (0, 230, 220), image_rect, 1)
 
